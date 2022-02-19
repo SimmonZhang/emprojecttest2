@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>物业管理主页</title>
+    <!--      <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <meta charset="UTF-8">
+    <!-- bootstrp的css文件 -->
+    <link type="text/css" media="all" href="../../static/BootStrp/bootstrap-3.4.1-dist/css/bootstrap.min.css"
+          th:href="@{/static/BootStrp/bootstrap-3.4.1-dist/css/bootstrap.min.css}" rel="stylesheet" />
+
+    <!-- 菜单栏相关外部文件 -->
+    <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+
+    <link rel="stylesheet" type="text/css" media="all" href="../../static/menu_document/css/htmleaf-demo.css"
+          th:href="@{/static/menu_document/css/htmleaf-demo.css}"/>
+    <link rel="stylesheet" href="../../static/menu_document/assets/css/jquery.mCustomScrollbar.min.css"
+          th:href="@{/static/menu_document/assets/css/jquery.mCustomScrollbar.min.css}"/>
+    <link rel="stylesheet" href="../../static/menu_document/assets/css/custom.css"
+          th:href="@{/static/menu_document/assets/css/custom.css}"/>
+
+
+    <!-- jquery的js文件 -->
+    <script type="text/javascript" src="../../static/jquery/js/jquery-3.4.1.min.js"
+            th:src="@{/static/jquery/js/jquery-3.4.1.min.js}"></script>
+    <style>
+        #divcss1{ margin:0 auto;text-align: center;line-height: unset;}
+        #divcss2{
+            position:relative;
+            /*top:100px;*/
+            left:2%;
+        }
+        .divcss3{
+            position:relative;
+            hight:275px;
+        }
+        input{width: 100px;color: black;}
+
+        .tdclass{display: none;}
+
+    </style>
+
+    <script  type="text/javascript">
+        function getFormatDate(){
+            var nowDate = new Date();
+            var year = nowDate.getFullYear();
+            var month = nowDate.getMonth() + 1 < 10 ? "0" + (nowDate.getMonth() + 1) : nowDate.getMonth() + 1;
+            var date = nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate.getDate();
+            var hour = nowDate.getHours()< 10 ? "0" + nowDate.getHours() : nowDate.getHours();
+            var minute = nowDate.getMinutes()< 10 ? "0" + nowDate.getMinutes() : nowDate.getMinutes();
+            var second = nowDate.getSeconds()< 10 ? "0" + nowDate.getSeconds() : nowDate.getSeconds();
+            var nowTime = year + "-" + month + "-" + date+" "+hour+":"+minute+":"+second;
+            $('#nowTime').text(nowTime);
+        }
+
+
+        $(function(){
+            setInterval(getFormatDate,1000);
+        })
+
+
+    </script>
+
+</head>
+<body>
+<div class="page-wrapper">
+    <nav id="sidebar" class="sidebar-wrapper">
+        <div class="sidebar-content">
+            <a href="#" id="toggle-sidebar"><i class="fa fa-bars"></i></a>
+            <div class="sidebar-brand">
+                <a href="#">pro sidebar</a>
+            </div>
+            <div class="sidebar-header">
+                <!-- <div class="user-pic">
+                    <img class="img-responsive img-rounded" src="assets/img/user.jpg" alt="">
+                </div> -->
+                <div class="user-info">
+                    <span class="user-name">Jhon <strong>Smith</strong></span>
+                    <span class="user-role">Administrator</span>
+                    <div class="user-status">
+                        <a href="#"><span class="label label-success">Online</span></a>
+                    </div>
+                </div>
+            </div><!-- sidebar-header  -->
+            <div class="sidebar-search">
+                <div>
+                    <div class="input-group">
+                        <input type="text" class="form-control search-menu" placeholder="Search for...">
+                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                    </div>
+                </div>
+            </div><!-- sidebar-search  -->
+            <div class="sidebar-menu">
+                <ul>
+                    <li class="header-menu"><span>Dropdown  menu</span></li>
+                    <li class="sidebar-dropdown">
+                        <a  href="#" ><i class="fa fa-tv"></i><span>Menu 1</span><span class="label label-danger">New</span></a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li><a href="../denizen/selectDenizen">住户信息管理<span class="label label-success">10</span></a> </li>
+                                <li><a href="../house/selectHouse">住房信息管理</a></li>
+                                <li><a href="../Spend/selectSpend">住户缴费管理</a></li>
+                                <li><a href="selectParking">车位信息管理 </a></li>
+                                <li><a href="#">员工信息管理 </a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#"><i class="fa fa-photo"></i><span>Menu 2</span><span class="badge">3</span></a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li><a href="#">submenu 1 <span class="badge">2</span></a></li>
+                                <li><a href="#">submenu 2</a></li>
+                                <li><a href="#">submenu 3</a></li>
+                                <li><a href="#">submenu 4</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#"><i class="fa fa-bar-chart-o"></i><span>Menu 3</span></a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li><a href="#">submenu 1</a></li>
+                                <li><a href="#">submenu 2</a></li>
+                                <li><a href="#">submenu 3</a></li>
+                                <li><a href="#">submenu 4</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#"><i class="fa fa-diamond"></i><span>Menu 4</span></a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li><a href="#">submenu 1</a></li>
+                                <li><a href="#">submenu 2</a></li>
+                                <li><a href="#">submenu 3</a></li>
+                                <li><a href="#">submenu 4</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="header-menu"><span>Simple menu</span></li>
+                    <li><a href="#"><i class="fa fa-tv"></i><span>Menu 1</span></a></li>
+                    <li><a href="#"><i class="fa fa-photo"></i><span>Menu 2</span></a></li>
+                    <li><a href="#"><i class="fa fa-bar-chart-o"></i><span>Menu 3</span></a></li>
+                    <li><a href="#"><i class="fa fa-diamond"></i><span>Menu 4</span></a></li>
+                </ul>
+            </div><!-- sidebar-menu  -->
+        </div><!-- sidebar-content  -->
+
+        <div class="sidebar-footer">
+            <a href="#"><i class="fa fa-bell"></i><span class="label label-warning notification">3</span></a>
+            <a href="#"><i class="fa fa-envelope"></i><span class="label label-success notification">7</span></a>
+            <a href="#"><i class="fa fa-gear"></i></a>
+            <a href="#"><i class="fa fa-power-off"></i></a>
+        </div>
+    </nav><!-- sidebar-wrapper  -->
+    <main class="page-content">
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-md-12 column">
+                    <div class="tabbable" id="tabs-456637">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#panel-395535" data-toggle="tab">车位信息管理</a>
+                            </li>
+<!--                            <li>-->
+<!--                                <a href="selectParkingU">车位出售管理</a>-->
+<!--                            </li>-->
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="panel-395535">
+                                <div class="container-fluid">
+                                    <header class="htmleaf-header">
+                                        <h1>车位信息管理</h1>
+
+                                    </header>
+                                </div>
+                                <div id="divcss1">
+                                    <form id="gselectform" th:action="@{/parking/selectParking}" th:method="get" >
+                                        <input id="page" name="page" value="1" type="hidden" />
+                                        所属人姓名<input id="name" name="parkingUName" type="text" th:value="${parkingPage.parkingUName}"/>
+                                        区域ID<input id="hId" name="parkingAId" type="text" th:value="${parkingPage.parkingAId}"/>
+                                        车位ID<input id="rId" name="parkingCId" type="text" th:value="${parkingPage.parkingCId}"/>
+                                        <button type="button" onclick="gselect()" style="color:black">查询</button>
+                                        <button type="button" style="color:black" onclick="pagefresh()">刷新</button>
+
+                                    </form>
+                                    </br>
+
+                                    <div id="" style="height:275px">
+                                        <table id="ctable" class="table" cellpadding="15" cellspacing="5" align="center">
+                                            <thead>
+                                            <td class="tdclass"></td>
+                                            <td>区域ID</td>
+                                            <td>车位ID</td>
+                                            <td>所属人姓名</td>
+                                            <td>所属人联系方式</td>
+                                            <td>车位状态</td>
+                                            <!--                                                          <td class="tdclass"></td>-->
+<!--                                            <td>备注</td>-->
+                                            <td></td>
+<!--                                            <td></td>-->
+                                            </thead>
+                                            <tbody id="info">
+                                            <!--                                          <div th:unless="${session.denizenList.list.isEmpty()}">-->
+                                            <!--                                              <input >-->
+                                            <tr th:each="data,dataStat:${parkingList.list}">
+                                                <td class="tdclass"  th:text="${data.parkingId}">
+                                                <td  th:text="${data.parkingAId}">
+                                                <td  th:text="${data.parkingCId}">
+                                                <td  th:text="${data.parkingUName}">
+                                                <td  th:text="${data.parkingUTel}"></td>
+                                                <div th:if="${data.parkingStatus eq '1'}">
+                                                <td th:text="未售"></td>
+                                                </div>
+                                                <div th:if="${data.parkingStatus eq '2'}">
+                                                <td th:text="已售"></td>
+                                                </div>
+                                                    <!--                                                <span th:text="${#dates.format(user.date, 'yyyy-MM-dd')}">4564546</span>-->
+                                                <td><input type="button" value='出售' id="updateBtnId" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal3"></td>
+
+                                                <td><input type="button" value='删除' id="delBtnId" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal2"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div id="divcss2">
+                                        <ul class="pagination pagination-sm" style="border: 1px white solid;">
+                                            <li th:onclick="'pagesplit('+${parkingList.prePage}+')'"><a>上一页</a></li>
+                                            <li th:onclick="'pagesplit(1)'"><a>1</a></li>
+                                            <li th:onclick="'pagesplit(2)'"><a>2</a></li>
+                                            <li th:onclick="'pagesplit(3)'"><a>3</a></li>
+                                            <li th:onclick="'pagesplit('+${parkingList.nextPage}+')'"><a>下一页</a></li>
+                                        </ul>
+                                    </div>
+                                    <td><input type="button" value='新增车位信息' id="addBtnId" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal1"></td>
+
+                                </div>
+
+                                <!--                                              （新增）模态框               -->
+                                <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title" id="myModalLabel"  style="color:black">模态框（Modal）标题</h4>
+                                            </div>
+                                            <div class="modal-body"  style="color:black">
+                                                <form id="addForm" class="bs-example bs-example-form" role="form">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" style="width: 100px">区域ID</span>
+                                                        <input id="aparkingAId" name="parkingAId"  type="text" class="form-control" placeholder="" style="width: 160px">
+                                                        <span class="input-group-addon" style="width: 100px">车位ID</span>
+                                                        <input id="aparkingCId" name="parkingCId"  type="text" class="form-control" placeholder="" style="width: 160px">
+                                                    </div>
+                                                    <div class="input-group">
+<!--                                                        <span class="input-group-addon" style="width: 100px">区域ID</span>-->
+                                                        <input id="aparkingStatus" name="parkingStatus"  type="hidden" value="1" class="form-control" placeholder="" style="width: 160px">
+                                                    </div>
+                                                </form>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal"  style="color:black">关闭</button>
+                                                    <button type="button" class="btn btn-primary" onclick="addForm()">提交更改</button>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal -->
+                                    </div>
+
+                                </div>
+
+                                <!--                                              （删除）模态框-->
+                                <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title" id="myModalLabel"  style="color:black">模态框（Modal）标题</h4>
+                                            </div>
+                                            <div class="modal-body"  style="color:black">
+                                                <form id="delForm" class="bs-example bs-example-form" role="form">
+                                                    <div class="input-group">
+                                                        <!--                                                                      <span class="input-group-addon" style="width: 100px">ID</span>-->
+                                                        <input id="dspendId" name="spendId"  type="hidden" class="form-control" placeholder="" style="width: 160px">
+                                                    </div>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" style="width: 100px">住户姓名</span>
+                                                        <input id="dspendUserName" name="spendUserName"  type="text" class="form-control" placeholder="" style="width: 160px">
+                                                        <span class="input-group-addon" style="width: 100px">楼栋ID</span>
+                                                        <input id="dspendHouseid" name="spendHouseid"  type="text" class="form-control" placeholder="" style="width: 160px">
+                                                    </div>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" style="width: 100px">房间ID</span>
+                                                        <input id="dspendRoomid" name="spendRoomid"  type="text" class="form-control" placeholder="" style="width: 160px">
+                                                    </div>
+                                                </form>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal"  style="color:black">关闭</button>
+                                                    <button type="button" class="btn btn-primary" onclick="delForm()">提交更改</button>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal -->
+                                    </div>
+
+                                </div>
+
+                                <!--                                              （修改/出售）模态框-->
+                                <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title" id="myModalLabel" style="color:black">模态框（Modal）标题</h4>
+                                            </div>
+                                            <div class="modal-body" style="color:black">
+                                                <!--                                                车位信息表单-->
+                                                <form id="setForm" class="bs-example bs-example-form" role="form">
+                                                    <div class="input-group">
+                                                        <!--                                                                      <span class="input-group-addon" style="width: 100px">ID</span>-->
+                                                        <input id="uparkingId" name="parkingId"  type="hidden" class="form-control" placeholder="" style="width: 160px">
+                                                    </div>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" style="width: 100px">区域ID</span>
+                                                        <input id="uparkingAId" name="parkingAId"  type="text" class="form-control" placeholder="" style="width: 160px">
+                                                        <span class="input-group-addon" style="width: 100px">车位ID</span>
+                                                        <input id="uparkingCId" name="parkingCId"  type="text" class="form-control" placeholder="" style="width: 160px">
+                                                    </div>
+                                                    <div class="input-group">
+                                                        <!--                                                        车位所属用户ID-->
+                                                        <input id="uparkingUId" name="parkingUId"  type="hidden" class="form-control" placeholder="" style="width: 160px">
+                                                        <span class="input-group-addon" style="width: 100px">所属人姓名</span>
+                                                        <input id="uparkingUName" name="parkingUName"  type="text" class="form-control" placeholder="" style="width: 160px">
+                                                        <span class="input-group-addon" style="width: 100px">联系方式</span>
+                                                        <input id="uparkingUTel" name="parkingUTel"  type="text" class="form-control" placeholder="" style="width: 160px">
+                                                    </div>
+                                                    <div class="input-group">
+
+                                                        <input id="uparkingStatus" name="parkingStatus"  type="hidden" value="2" class="form-control" placeholder="" style="width: 160px">
+                                                    </div>
+                                                    <div class="input-group">
+                                                        <!--                                                        <span class="input-group-addon" style="width: 100px">创建时间</span>-->
+                                                        <input id="aspendTime" name="spendTime"  type="hidden" class="form-control" placeholder="" style="width: 160px">
+                                                    </div>
+
+                                                </form>
+                                                <!--                                                选择住户-->
+                                                <div id="divcss1">
+                                                    <form id="selectDenizenForm" >
+                                                        <input id="page" name="page" value="1" type="hidden" />
+                                                        住户姓名<input id="name" name="name" type="text" />
+                                                        <button type="button" onclick="showDenizenAjax()" style="color:black">查询</button>
+                                                        <button type="button" style="color:black" onclick="pagefresh()">刷新</button>
+
+                                                    </form>
+                                                    </br>
+
+                                                    <div id="" style="height:275px">
+                                                        <table id="dtable" class="table" cellpadding="15" cellspacing="5" align="center">
+                                                            <thead>
+                                                            <td></td>
+                                                            <td class="tdclass"></td>
+                                                            <td>住户姓名</td>
+                                                            <td>楼栋ID</td>
+                                                            <td>房间ID</td>
+                                                            </thead>
+                                                            <tbody id="dinfo">
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal" style="color:black">关闭</button>
+                                                <button type="button" class="btn btn-primary" onclick="setForm()">提交更改</button>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal -->
+                                </div>
+
+                            </div>
+                            <div class="tab-pane" id="panel-139802">
+                                <p>
+                                    Howdy, I'm in Section 2.
+
+
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main><!-- page-content" -->
+
+
+
+
+</div>
+<!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+<script src="../../static/BootStrp/bootstrap-3.4.1-dist/js/bootstrap.min.js"
+        th:src="@{/static/BootStrp/bootstrap-3.4.1-dist/js/bootstrap.min.js}"></script>
+<!-- 包括所有已编译的插件 -->
+<script src="../../static/menu_document/assets/js/jquery.mCustomScrollbar.concat.min.js"
+        th:src="@{/static/menu_document/assets/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+<script src="../../static/menu_document/assets/js/custom.js"
+        th:src="@{/static/menu_document/assets/js/custom.js}"></script>
+
+</body>
+<script  type="text/javascript" th:inline="javascript">
+    $(function() {
+        tTof();
+    })
+
+
+    //刷新
+    function pagefresh(){
+        $(':input','#gselectform')
+            .val('').not(':button',':reset',':submit',':hidden')
+            .removeAttr('checked')
+            .removeAttr('selected');
+        $("#page").val(1);
+        $("#gselectform").submit();
+    }
+
+    //查询
+    function gselect(){
+        $("#gselectform").submit();
+    }
+
+    //分页查询
+    function pagesplit(page){
+        $('#page').val(page);
+        $("#gselectform").submit();
+    }
+
+    //车位信息查询ajax
+    function parkingPage(){
+        $("#ctable tbody").on("click","tr",function() {
+
+            let td = $(this).find("td");
+            let data0 = td.eq(0).text();
+            $.ajax({
+                url: "/parking/selectParkingAjax",
+                type: "get",
+                data:{"parkingUId":data0},
+                dataType: 'json',
+                contentType : "application/json; charset=utf-8",
+                success: function (resp) {
+                    $("#pinfo").html("");
+                    let tbody = "";
+                    $.each(resp, function (index, el) {
+                        let tr = "<tr>";
+                        // tr += "<td class='tdclass'>" + el.parkingId  + "</td>";
+                        tr += "<td>" + el.parkingAId  + "</td>";
+                        tr += "<td>" + el.parkingCId  + "</td>";
+                        // tr += "<td>" + el.parkingUId  + "</td>";
+                        tr += "<td>" + el.parkingUName  + "</td>";
+                        tr += "<td>" + el.parkingUTel  + "</td>";
+                        tr += "<td>" + el.parkingStatus  + "</td>";
+                        tr += "</tr>";
+                        tbody += tr;
+                    });
+
+                    $('#ptable').children('tbody').append(tbody);
+
+                },
+                error:function(resp){
+                    alert("error");
+                }
+            })
+        });
+
+
+    }
+
+
+    //table_data --->form_data点击事件
+    function tTof(){
+
+        $("#ctable tbody").on("click","tr",function() {
+
+            let td = $(this).find("td");
+            let data0 = td.eq(0).text();
+            let data1 = td.eq(1).text();
+            let data2 = td.eq(2).text();
+            // let data3 = td.eq(3).text();
+            // let data4 = td.eq(4).text();
+            // let data5 = td.eq(5).text();
+            // let data6 = td.eq(6).text();
+
+            $("#uparkingId").val(data0);
+            $("#uparkingAId").val(data1);
+            $("#uparkingCId").val(data2);
+            // $("#aspendHouseid").val(data3);
+            // $("#aspendRoomid").val(data4);
+        });
+        $("#dtable tbody").on("click","tr",function() {
+
+            let td = $(this).find("td");
+            // let data0 = td.eq(0).text();
+            let data1 = td.eq(1).text();
+            let data2 = td.eq(2).text();
+            // let data3 = td.eq(3).text();
+            // let data4 = td.eq(4).text();
+            // let data5 = td.eq(5).text();
+            // let data6 = td.eq(6).text();
+
+            // $("#uparkingId").val(data0);
+            $("#uparkingUId").val(data1);
+            $("#uparkingUName").val(data2);
+            // $("#aspendHouseid").val(data3);
+            // $("#aspendRoomid").val(data4);
+        });
+    }
+
+    //ajax查询用户信息
+    function showDenizenAjax (){
+        let i = $("#selectDenizenForm").serialize();
+        i = decodeURIComponent(i,true);
+        $.ajax({
+            url: "/denizen/showDenizenPageAjax",
+            type: "get",
+            data:i,
+            // dataType: 'text',
+            // contentType : "application/json; charset=utf-8",
+            success: function (resp) {
+                $("#dinfo").html("");
+                let tbody = "";
+                $.each(resp, function (index, el) {
+                    let tr = "<tr>";
+                    tr += "<td><input type='checkbox'></td>";
+                    tr += "<td class='tdclass'>" + el.denizenId  + "</td>";
+                    tr += "<td>" + el.denizenName  + "</td>";
+                    tr += "<td>" + el.denizenHouseid  + "</td>";
+                    tr += "<td>" + el.denizenRoomid  + "</td>";
+                    tr += "</tr>";
+                    tbody += tr;
+                });
+
+                $('#dtable').children('tbody').append(tbody);
+
+            },
+            error:function(resp){
+                alert("error");
+            }
+        })
+
+    }
+
+    function setForm(){
+        let i = $("#setForm").serialize();
+        i = decodeURIComponent(i,true);
+        $.ajax({
+            url: "/parking/updateParking",
+            type: "post",
+            data:i,
+            dataType: 'text',
+            // contentType : "application/json; charset=utf-8",
+            success: function (resp) {
+                alert(resp);
+                $('#myModal3').modal('hide');
+                gselect();
+            },
+            error:function(resp){
+                alert("error");
+            }
+        })
+
+
+    }
+
+    //新增函数
+    function addForm(){
+        let i = $("#addForm").serialize();
+        i = decodeURIComponent(i,true);
+
+
+        $.ajax({
+            url: "/parking/insertParking",
+            type: "get",
+            data:i,
+            // async:false,
+            dataType: 'text',
+            success: function (resp) {
+                alert(resp)
+                $('#myModal1').modal('hide');
+                gselect();
+            },
+            error:function(resp){
+                alert("error");
+            }
+        })
+    }
+    //删除函数
+    function delForm(){
+        let i = $("#delForm").serialize();
+        i = decodeURIComponent(i,true);
+
+        $.ajax({
+            url: "/spend/deleteSpend",
+            type: "get",
+            data:i,
+            // async:false,
+            // dataType: 'text',
+            success: function (resp) {
+                alert(resp)
+                $('#myModal2').modal('hide');
+                gselect();
+            },
+            error:function(resp){
+                alert("error");
+            }
+        })
+    }
+
+
+</script>
+</html>

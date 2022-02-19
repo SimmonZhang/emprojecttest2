@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo1.mapper.HouseMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo1.model.House">
+    <id column="house_id" jdbcType="VARCHAR" property="houseId" />
+    <result column="house_h_id" jdbcType="CHAR" property="houseHId" />
+    <result column="house_r_id" jdbcType="CHAR" property="houseRId" />
+    <result column="house_area" jdbcType="VARCHAR" property="houseArea" />
+    <result column="house_u_name" jdbcType="VARCHAR" property="houseUName" />
+    <result column="house_u_tel" jdbcType="VARCHAR" property="houseUTel" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    house_id, house_h_id, house_r_id, house_area, house_u_name, house_u_tel
+  </sql>
+  <select id="selectByExample" parameterType="com.example.demo1.model.HouseExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from tb_house
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_house
+    where house_id = #{houseId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_house
+    where house_id = #{houseId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo1.model.House">
+    insert into tb_house (house_id, house_h_id, house_r_id, 
+      house_area, house_u_name, house_u_tel
+      )
+    values (#{houseId,jdbcType=VARCHAR}, #{houseHId,jdbcType=CHAR}, #{houseRId,jdbcType=CHAR}, 
+      #{houseArea,jdbcType=VARCHAR}, #{houseUName,jdbcType=VARCHAR}, #{houseUTel,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo1.model.House">
+    insert into tb_house
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="houseId != null">
+        house_id,
+      </if>
+      <if test="houseHId != null">
+        house_h_id,
+      </if>
+      <if test="houseRId != null">
+        house_r_id,
+      </if>
+      <if test="houseArea != null">
+        house_area,
+      </if>
+      <if test="houseUName != null">
+        house_u_name,
+      </if>
+      <if test="houseUTel != null">
+        house_u_tel,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="houseId != null">
+        #{houseId,jdbcType=VARCHAR},
+      </if>
+      <if test="houseHId != null">
+        #{houseHId,jdbcType=CHAR},
+      </if>
+      <if test="houseRId != null">
+        #{houseRId,jdbcType=CHAR},
+      </if>
+      <if test="houseArea != null">
+        #{houseArea,jdbcType=VARCHAR},
+      </if>
+      <if test="houseUName != null">
+        #{houseUName,jdbcType=VARCHAR},
+      </if>
+      <if test="houseUTel != null">
+        #{houseUTel,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo1.model.House">
+    update tb_house
+    <set>
+      <if test="houseHId != null">
+        house_h_id = #{houseHId,jdbcType=CHAR},
+      </if>
+      <if test="houseRId != null">
+        house_r_id = #{houseRId,jdbcType=CHAR},
+      </if>
+      <if test="houseArea != null">
+        house_area = #{houseArea,jdbcType=VARCHAR},
+      </if>
+      <if test="houseUName != null">
+        house_u_name = #{houseUName,jdbcType=VARCHAR},
+      </if>
+      <if test="houseUTel != null">
+        house_u_tel = #{houseUTel,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where house_id = #{houseId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo1.model.House">
+    update tb_house
+    set house_h_id = #{houseHId,jdbcType=CHAR},
+      house_r_id = #{houseRId,jdbcType=CHAR},
+      house_area = #{houseArea,jdbcType=VARCHAR},
+      house_u_name = #{houseUName,jdbcType=VARCHAR},
+      house_u_tel = #{houseUTel,jdbcType=VARCHAR}
+    where house_id = #{houseId,jdbcType=VARCHAR}
+  </update>
+</mapper>

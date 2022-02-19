@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo1.mapper.DenizenMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo1.model.Denizen">
+    <id column="denizen_id" jdbcType="VARCHAR" property="denizenId" />
+    <result column="denizen_name" jdbcType="VARCHAR" property="denizenName" />
+    <result column="denizen_hhouseid" jdbcType="VARCHAR" property="denizenHhouseid" />
+    <result column="denizen_houseid" jdbcType="CHAR" property="denizenHouseid" />
+    <result column="denizen_roomid" jdbcType="CHAR" property="denizenRoomid" />
+    <result column="denizen_tel" jdbcType="VARCHAR" property="denizenTel" />
+    <result column="denizen_parking" jdbcType="VARCHAR" property="denizenParking" />
+    <result column="denizen_moneystatus" jdbcType="CHAR" property="denizenMoneystatus" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    denizen_id, denizen_name, denizen_hhouseid, denizen_houseid, denizen_roomid, denizen_tel, 
+    denizen_parking, denizen_moneystatus
+  </sql>
+  <select id="selectByExample" parameterType="com.example.demo1.model.DenizenExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from tb_denizen
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_denizen
+    where denizen_id = #{denizenId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_denizen
+    where denizen_id = #{denizenId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo1.model.Denizen">
+    insert into tb_denizen (denizen_id, denizen_name, denizen_hhouseid, 
+      denizen_houseid, denizen_roomid, denizen_tel, 
+      denizen_parking, denizen_moneystatus)
+    values (#{denizenId,jdbcType=VARCHAR}, #{denizenName,jdbcType=VARCHAR}, #{denizenHhouseid,jdbcType=VARCHAR}, 
+      #{denizenHouseid,jdbcType=CHAR}, #{denizenRoomid,jdbcType=CHAR}, #{denizenTel,jdbcType=VARCHAR}, 
+      #{denizenParking,jdbcType=VARCHAR}, #{denizenMoneystatus,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo1.model.Denizen">
+    insert into tb_denizen
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="denizenId != null">
+        denizen_id,
+      </if>
+      <if test="denizenName != null">
+        denizen_name,
+      </if>
+      <if test="denizenHhouseid != null">
+        denizen_hhouseid,
+      </if>
+      <if test="denizenHouseid != null">
+        denizen_houseid,
+      </if>
+      <if test="denizenRoomid != null">
+        denizen_roomid,
+      </if>
+      <if test="denizenTel != null">
+        denizen_tel,
+      </if>
+      <if test="denizenParking != null">
+        denizen_parking,
+      </if>
+      <if test="denizenMoneystatus != null">
+        denizen_moneystatus,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="denizenId != null">
+        #{denizenId,jdbcType=VARCHAR},
+      </if>
+      <if test="denizenName != null">
+        #{denizenName,jdbcType=VARCHAR},
+      </if>
+      <if test="denizenHhouseid != null">
+        #{denizenHhouseid,jdbcType=VARCHAR},
+      </if>
+      <if test="denizenHouseid != null">
+        #{denizenHouseid,jdbcType=CHAR},
+      </if>
+      <if test="denizenRoomid != null">
+        #{denizenRoomid,jdbcType=CHAR},
+      </if>
+      <if test="denizenTel != null">
+        #{denizenTel,jdbcType=VARCHAR},
+      </if>
+      <if test="denizenParking != null">
+        #{denizenParking,jdbcType=VARCHAR},
+      </if>
+      <if test="denizenMoneystatus != null">
+        #{denizenMoneystatus,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo1.model.Denizen">
+    update tb_denizen
+    <set>
+      <if test="denizenName != null">
+        denizen_name = #{denizenName,jdbcType=VARCHAR},
+      </if>
+      <if test="denizenHhouseid != null">
+        denizen_hhouseid = #{denizenHhouseid,jdbcType=VARCHAR},
+      </if>
+      <if test="denizenHouseid != null">
+        denizen_houseid = #{denizenHouseid,jdbcType=CHAR},
+      </if>
+      <if test="denizenRoomid != null">
+        denizen_roomid = #{denizenRoomid,jdbcType=CHAR},
+      </if>
+      <if test="denizenTel != null">
+        denizen_tel = #{denizenTel,jdbcType=VARCHAR},
+      </if>
+      <if test="denizenParking != null">
+        denizen_parking = #{denizenParking,jdbcType=VARCHAR},
+      </if>
+      <if test="denizenMoneystatus != null">
+        denizen_moneystatus = #{denizenMoneystatus,jdbcType=CHAR},
+      </if>
+    </set>
+    where denizen_id = #{denizenId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo1.model.Denizen">
+    update tb_denizen
+    set denizen_name = #{denizenName,jdbcType=VARCHAR},
+      denizen_hhouseid = #{denizenHhouseid,jdbcType=VARCHAR},
+      denizen_houseid = #{denizenHouseid,jdbcType=CHAR},
+      denizen_roomid = #{denizenRoomid,jdbcType=CHAR},
+      denizen_tel = #{denizenTel,jdbcType=VARCHAR},
+      denizen_parking = #{denizenParking,jdbcType=VARCHAR},
+      denizen_moneystatus = #{denizenMoneystatus,jdbcType=CHAR}
+    where denizen_id = #{denizenId,jdbcType=VARCHAR}
+  </update>
+</mapper>

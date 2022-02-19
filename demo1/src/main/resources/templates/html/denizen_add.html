@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>物业管理主页</title>
+    <!--      <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <meta charset="UTF-8">
+    <!-- bootstrp的css文件 -->
+    <link type="text/css" media="all" href="../../static/BootStrp/bootstrap-3.4.1-dist/css/bootstrap.min.css"
+          th:href="@{/static/BootStrp/bootstrap-3.4.1-dist/css/bootstrap.min.css}" rel="stylesheet" />
+
+    <!-- 菜单栏相关外部文件 -->
+    <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+
+    <link rel="stylesheet" type="text/css" media="all" href="../../static/menu_document/css/htmleaf-demo.css"
+          th:href="@{/static/menu_document/css/htmleaf-demo.css}"/>
+    <link rel="stylesheet" href="../../static/menu_document/assets/css/jquery.mCustomScrollbar.min.css"
+          th:href="@{/static/menu_document/assets/css/jquery.mCustomScrollbar.min.css}"/>
+    <link rel="stylesheet" href="../../static/menu_document/assets/css/custom.css"
+          th:href="@{/static/menu_document/assets/css/custom.css}"/>
+
+
+    <!-- jquery的js文件 -->
+    <script type="text/javascript" src="../../static/jquery/js/jquery-3.4.1.min.js"
+            th:src="@{/static/jquery/js/jquery-3.4.1.min.js}"></script>
+    <style>
+        #divcss1{ margin:0 auto;text-align: center;line-height: unset;}
+        #divcss2{
+            position:relative;
+            /*top:100px;*/
+            left:2%;
+        }
+        .divcss3{
+            position:relative;
+            hight:275px;
+        }
+        input{width: 100px;color: black;}
+
+        .tdclass{display: none;}
+
+    </style>
+
+    <script  type="text/javascript">
+        function getFormatDate(){
+            var nowDate = new Date();
+            var year = nowDate.getFullYear();
+            var month = nowDate.getMonth() + 1 < 10 ? "0" + (nowDate.getMonth() + 1) : nowDate.getMonth() + 1;
+            var date = nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate.getDate();
+            var hour = nowDate.getHours()< 10 ? "0" + nowDate.getHours() : nowDate.getHours();
+            var minute = nowDate.getMinutes()< 10 ? "0" + nowDate.getMinutes() : nowDate.getMinutes();
+            var second = nowDate.getSeconds()< 10 ? "0" + nowDate.getSeconds() : nowDate.getSeconds();
+            var nowTime = year + "-" + month + "-" + date+" "+hour+":"+minute+":"+second;
+            $('#nowTime').text(nowTime);
+        }
+
+
+        $(function(){
+            setInterval(getFormatDate,1000);
+        })
+
+
+    </script>
+
+</head>
+<body>
+<div class="page-wrapper">
+    <nav id="sidebar" class="sidebar-wrapper">
+        <div class="sidebar-content">
+            <a href="#" id="toggle-sidebar"><i class="fa fa-bars"></i></a>
+            <div class="sidebar-brand">
+                <a href="#">pro sidebar</a>
+            </div>
+            <div class="sidebar-header">
+                <!-- <div class="user-pic">
+                    <img class="img-responsive img-rounded" src="assets/img/user.jpg" alt="">
+                </div> -->
+                <div class="user-info">
+                    <span class="user-name">Jhon <strong>Smith</strong></span>
+                    <span class="user-role">Administrator</span>
+                    <div class="user-status">
+                        <a href="#"><span class="label label-success">Online</span></a>
+                    </div>
+                </div>
+            </div><!-- sidebar-header  -->
+            <div class="sidebar-search">
+                <div>
+                    <div class="input-group">
+                        <input type="text" class="form-control search-menu" placeholder="Search for...">
+                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                    </div>
+                </div>
+            </div><!-- sidebar-search  -->
+            <div class="sidebar-menu">
+                <ul>
+                    <li class="header-menu"><span>Dropdown  menu</span></li>
+                    <li class="sidebar-dropdown">
+                        <a  href="#" ><i class="fa fa-tv"></i><span>Menu 1</span><span class="label label-danger">New</span></a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li><a href="selectDenizen">住户信息管理<span class="label label-success">10</span></a> </li>
+                                <li><a href="../house/selectHouse">住房信息管理</a></li>
+                                <li><a href="../spend/selectSpend">住户缴费管理</a></li>
+                                <li><a href="../parking/selectParking">车位信息管理 </a></li>
+                                <li><a href="#">员工信息管理 </a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#"><i class="fa fa-photo"></i><span>Menu 2</span><span class="badge">3</span></a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li><a href="#">submenu 1 <span class="badge">2</span></a></li>
+                                <li><a href="#">submenu 2</a></li>
+                                <li><a href="#">submenu 3</a></li>
+                                <li><a href="#">submenu 4</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#"><i class="fa fa-bar-chart-o"></i><span>Menu 3</span></a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li><a href="#">submenu 1</a></li>
+                                <li><a href="#">submenu 2</a></li>
+                                <li><a href="#">submenu 3</a></li>
+                                <li><a href="#">submenu 4</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#"><i class="fa fa-diamond"></i><span>Menu 4</span></a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li><a href="#">submenu 1</a></li>
+                                <li><a href="#">submenu 2</a></li>
+                                <li><a href="#">submenu 3</a></li>
+                                <li><a href="#">submenu 4</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="header-menu"><span>Simple menu</span></li>
+                    <li><a href="#"><i class="fa fa-tv"></i><span>Menu 1</span></a></li>
+                    <li><a href="#"><i class="fa fa-photo"></i><span>Menu 2</span></a></li>
+                    <li><a href="#"><i class="fa fa-bar-chart-o"></i><span>Menu 3</span></a></li>
+                    <li><a href="#"><i class="fa fa-diamond"></i><span>Menu 4</span></a></li>
+                </ul>
+            </div><!-- sidebar-menu  -->
+        </div><!-- sidebar-content  -->
+
+        <div class="sidebar-footer">
+            <a href="#"><i class="fa fa-bell"></i><span class="label label-warning notification">3</span></a>
+            <a href="#"><i class="fa fa-envelope"></i><span class="label label-success notification">7</span></a>
+            <a href="#"><i class="fa fa-gear"></i></a>
+            <a href="#"><i class="fa fa-power-off"></i></a>
+        </div>
+    </nav><!-- sidebar-wrapper  -->
+    <main class="page-content">
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-md-12 column">
+                    <div class="tabbable" id="tabs-456637">
+                        <ul class="nav nav-tabs">
+                            <li>
+                                <a href="../denizen/selectDenizen">住户信息管理</a>
+                            </li>
+                            <li class="active">
+                                <!--                                              <a href="#panel-139802" data-toggle="tab">住户信息添加</a>-->
+                                <a href="#panel-139802" data-toggle="tab">住户信息添加</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="panel-139802">
+                                <div class="container-fluid">
+                                    <header class="htmleaf-header">
+                                        <h1>住户信息管理</h1>
+
+                                    </header>
+                                </div>
+                                <div id="divcss1">
+                                    <form id="gselectform" >
+                                        <input id="page" name="page" value="1" type="hidden" />
+                                        楼栋ID<input id="houseHId" name="houseHId" type="text" />
+                                        房间ID<input id="houseRId" name="houseRId" type="text" />
+                                        面积<input id="houseArea" name="houseArea" type="text" />
+                                        <button type="button" onclick="gselect()" style="color:black">查询</button>
+                                        <button type="button" style="color:black" onclick="pagefresh()">刷新</button>
+
+                                    </form>
+                                    </br>
+
+                                    <div  style="height:275px">
+                                        <table id="ctable" class="table" cellpadding="15" cellspacing="5" align="center">
+                                            <thead>
+                                            <td></td>
+                                            <td class="tdclass"></td>
+                                            <td>楼栋号</td>
+                                            <td>房间号</td>
+                                            <td>面积</td>
+                                            <td>户主姓名</td>
+                                            <td>户主电话</td>
+                                            </thead>
+                                            <tbody id="info">
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div id="divcss2">
+                                        <ul class="pagination pagination-sm" style="border: 1px white solid;">
+                                            <li th:onclick=""><a>上一页</a></li>
+                                            <li th:onclick="'pagesplit(1)'"><a>1</a></li>
+                                            <li th:onclick="'pagesplit(2)'"><a>2</a></li>
+                                            <li th:onclick="'pagesplit(3)'"><a>3</a></li>
+                                            <li th:onclick=""><a>下一页</a></li>
+                                        </ul>
+                                    </div>
+                                    <input type="button" value='新增住户' id="addBtnId" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal1">
+
+                                </div>
+
+                                <!--                                              （新增）模态框-->
+                                <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title" id="myModalLabel" style="color:black">模态框（Modal）标题</h4>
+                                            </div>
+                                            <div class="modal-body" style="color:black">
+                                                <form id="addForm" class="bs-example bs-example-form" role="form">
+                                                    <div class="input-group">
+                                                        <!--                                                                      <span class="input-group-addon" style="width: 100px">ID</span>-->
+                                                        <input id="adenizenHhouseid" name="denizenHhouseid"  type="hidden" class="form-control" placeholder="" style="width: 160px">
+                                                    </div>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" style="width: 100px">住户姓名</span>
+                                                        <input id="adenizenName" name="denizenName"  type="text" class="form-control" placeholder="" style="width: 160px">
+                                                        <span class="input-group-addon" style="width: 100px">楼栋ID</span>
+                                                        <input id="adenizenHouseid" name="denizenHouseid"  type="text" class="form-control" placeholder="" style="width: 160px">
+                                                    </div>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" style="width: 100px">房间ID</span>
+                                                        <input id="adenizenRoomid" name="denizenRoomid"  type="text" class="form-control" placeholder="" style="width: 160px">
+                                                        <span class="input-group-addon" style="width: 100px">联系方式</span>
+                                                        <input id="adenizenTel" name="denizenTel"  type="text" class="form-control" placeholder="ID" style="width: 160px">
+                                                    </div>
+                                                    <!--                                                                  <div class="input-group">-->
+                                                    <!--                                                                      <span class="input-group-addon" style="width: 100px">车位信息</span>-->
+                                                    <!--                                                                      <input id="sdenizenParking" name="denizenParking"  type="text" class="form-control" placeholder="" style="width: 160px">-->
+                                                    <!--                                                                  </div>-->
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" style="width: 100px">物业费缴费状态</span>
+                                                        <select name="denizenMoneystatus">
+                                                        <option value ="1" selected>未缴</option>
+                                                        <option value ="2">已缴</option>
+                                                        </select>
+<!--                                                        <input id="adenizenMoneystatus" name="denizenMoneystatus"  type="text" class="form-control" value="1" placeholder="" style="width: 160px">-->
+                                                    </div>
+                                                </form>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal" style="color:black">关闭</button>
+                                                <button type="button" class="btn btn-primary" onclick="addForm()">提交更改</button>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal -->
+                                </div>
+
+
+
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+    </main><!-- page-content" -->
+
+
+
+
+</div>
+<!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+<script src="../../static/BootStrp/bootstrap-3.4.1-dist/js/bootstrap.min.js"
+        th:src="@{/static/BootStrp/bootstrap-3.4.1-dist/js/bootstrap.min.js}"></script>
+<!-- 包括所有已编译的插件 -->
+<script src="../../static/menu_document/assets/js/jquery.mCustomScrollbar.concat.min.js"
+        th:src="@{/static/menu_document/assets/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+<script src="../../static/menu_document/assets/js/custom.js"
+        th:src="@{/static/menu_document/assets/js/custom.js}"></script>
+
+</body>
+<script  type="text/javascript" th:inline="javascript">
+    // let list =  [[${list}]] ;
+    // alert(list)
+    $(function() {
+        tTof();
+        gselect();
+    })
+
+
+    //刷新
+    function pagefresh(){
+        $(':input','#gselectform')
+            .val('').not(':button',':reset',':submit',':hidden')
+            .removeAttr('checked')
+            .removeAttr('selected');
+        $("#page").val(1);
+        $("#gselectform").submit();
+    }
+
+    // function gselectTest(){
+    //     let list = /* [[${list}]] */;
+    //
+    // }
+
+
+    //查询
+    function gselect(){
+        // $("#gselectform").submit();
+        let i = $("#gselectform").serialize();
+        i = decodeURIComponent(i,true);
+
+        $.ajax({
+            url: "/denizen/showHousePageAjax",
+            type: "get",
+            data:i,
+            dataType: 'json',
+            contentType : "application/json; charset=utf-8",
+            success: function (resp) {
+
+                $("#info").html("");
+                let tbody = "";
+                $.each(resp.list, function (index, el) {
+                    let tr = "<tr>";
+                    tr += "<td class='tdclass'>" + el.houseId  + "</td>";
+                    tr += "<td><input type='checkbox'></td>";
+                    tr += "<td>" + el.houseHId  + "</td>";
+                    tr += "<td>" + el.houseRId  + "</td>";
+                    tr += "<td>" + el.houseArea  + "</td>";
+                    tr += "<td>" + el.houseUName  + "</td>";
+                    tr += "<td>" + el.houseUTel  + "</td>";
+                    tr += "</tr>";
+                    tbody += tr;
+                });
+
+                $('#ctable').children('tbody').append(tbody);
+
+            },
+            error:function(resp){
+                alert("error");
+            }
+        })
+    }
+
+    //添加函数
+    function addForm(){
+        let i = $("#addForm").serialize();
+        i = decodeURIComponent(i,true);
+
+        $.ajax({
+            url: "/denizen/insertDenizen",
+            type: "post",
+            data:i,
+            dataType: 'text',
+            // contentType : "application/json; charset=utf-8",
+            success: function (resp) {
+                alert(resp);
+                $('#myModal1').modal('hide');
+                gselect();
+            },
+            error:function(resp){
+                alert("error");
+            }
+        })
+
+    }
+
+    //分页查询
+    function pagesplit(page){
+        $('#page').val(page);
+        $("#gselectform").submit();
+    }
+
+    //table_data --->form_data点击事件
+    function tTof(){
+
+        $("#ctable tbody").on("click","tr",function() {
+
+            let td = $(this).find("td");
+            let data0 = td.eq(0).text();
+            // let data1 = td.eq(1).text();
+            let data2 = td.eq(2).text();
+            let data3 = td.eq(3).text();
+            let data4 = td.eq(4).text();
+            // let data5 = td.eq(5).text();
+            let data6 = td.eq(6).text();
+
+            $("#adenizenHhouseid").val(data0);
+            // $("#sdenizenName").val(data1);
+            $("#adenizenHouseid").val(data2);
+            $("#adenizenRoomid").val(data3);
+            $("#adenizenTel").val(data6);
+            // $("#adenizenParking").val(data5);
+            // $("#adenizenMoneystatus").val(data6);
+        });
+    }
+
+    //修改函数
+    function setForm(){
+        let i = $("#setForm").serialize();
+        i = decodeURIComponent(i,true);
+
+
+        $.ajax({
+            url: "/denizen/updateDenizen",
+            type: "get",
+            data:i,
+            // async:false,
+            // dataType: 'text',
+            success: function (resp) {
+                alert(resp)
+                $('#myModal1').modal('hide');
+                gselect();
+            },
+            error:function(resp){
+                alert("error");
+            }
+        })
+    }
+    //删除函数
+    function delForm(){
+        let i = $("#delForm").serialize();
+        i = decodeURIComponent(i,true);
+
+        $.ajax({
+            url: "/denizen/deleteDenizen",
+            type: "get",
+            data:i,
+            // async:false,
+            // dataType: 'text',
+            success: function (resp) {
+                alert(resp)
+                $('#myModal2').modal('hide');
+                gselect();
+            },
+            error:function(resp){
+                alert("error");
+            }
+        })
+    }
+
+
+</script>
+</html>

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo1.mapper.LoginMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo1.model.User">
+        <id column="user_id" jdbcType="INTEGER" property="userId" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="user_pwd" jdbcType="VARCHAR" property="userPwd" />
+        <result column="user_nickname" jdbcType="VARCHAR" property="userNickname" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="delete_status" jdbcType="VARCHAR" property="deleteStatus" />
+    </resultMap>
+
+    <resultMap id="userInfo" type="com.example.demo1.dto.session.SessionUserInfo">
+        <id column="userId" property="userId"/>
+        <result column="user_name" property="username"/>
+        <result column="user_nickname" property="nickname"/>
+
+        <collection property="roleIds" ofType="Integer">
+            <id column="roleId" property="roleId"/>
+        </collection>
+        <collection property="menuList" ofType="String">
+            <id column="menuCode" property="menuCode"/>
+        </collection>
+        <collection property="permissionList" ofType="String">
+            <id column="permissionCode" property="permissionCode"/>
+        </collection>
+
+<!--        <collection property="roleIds" ofType="Integer">-->
+<!--            <constructor>-->
+<!--                &lt;!&ndash; column 指定数据集的字段名 &ndash;&gt;-->
+<!--                <arg column="roleId"></arg>-->
+<!--            </constructor>-->
+<!--        </collection>-->
+<!--        <collection property="menuList" ofType="String">-->
+<!--            <constructor>-->
+<!--                &lt;!&ndash; column 指定数据集的字段名 &ndash;&gt;-->
+<!--                <arg column="menuCode"></arg>-->
+<!--            </constructor>-->
+<!--        </collection>-->
+<!--        <collection property="permissionList" ofType="String">-->
+<!--            <constructor>-->
+<!--                &lt;!&ndash; column 指定数据集的字段名 &ndash;&gt;-->
+<!--                <arg column="permissionCode"></arg>-->
+<!--            </constructor>-->
+<!--        </collection>-->
+
+
+<!--        <collection property="roleIds" fetchType="lazy" column="ur_r_id" ofType="ArrayList"-->
+<!--                    select="com.example.demo1.mapper.LoginMapper.getUserInfo"/>-->
+<!--        <collection property="menuList" fetchType="lazy" column="menu_code" ofType="ArrayList"-->
+<!--                    select="com.example.demo1.mapper.LoginMapper.getUserInfo"/>-->
+<!--        <collection property="permissionList" fetchType="lazy" column="pm_code" ofType="ArrayList"-->
+<!--                    select="com.example.demo1.mapper.LoginMapper.getUserInfo"/>-->
+
+<!--        <collection property="roleIds" ofType="java.lang.Integer" javaType="java.util.List">-->
+<!--            <result column="ur_r_id"/>-->
+<!--        </collection>-->
+<!--        <collection property="menuList" ofType="java.lang.String" javaType="java.util.List">-->
+<!--            <result column="menu_code"/>-->
+<!--        </collection>-->
+<!--        <collection property="permissionList" ofType="java.lang.String" javaType="java.util.List">-->
+<!--            <result column="pm_code"/>-->
+<!--        </collection>-->
+    </resultMap>
+
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        user_id, user_name, user_pwd, user_nickname, create_time, update_time, delete_status
+    </sql>
+
+    <select id="getUserInfo" resultMap="userInfo">
+        SELECT u.user_id              userId,
+               u.user_name,
+               u.user_nickname,
+               ur.ur_r_id        roleId,
+               p.menu_code       menuCode,
+               p.pm_code permissionCode
+        FROM tb_user u
+                 LEFT JOIN tb_user_role ur on u.user_id = ur.ur_u_id
+                 LEFT JOIN tb_role r ON r.role_id = ur.ur_r_id
+                 LEFT JOIN tb_role_pm rp ON r.role_id = rp.rp_r_id
+                 LEFT JOIN tb_permission p ON rp.rp_p_id = p.pm_id AND rp.delete_status = '1'
+        WHERE u.user_name = #{username}
+          AND u.delete_status = '1'
+    </select>
+
+
+
+    <select id="selectByExample" parameterType="com.example.demo1.model.UserExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        'false' as QUERYID,
+        <include refid="Base_Column_List" />
+        from tb_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_user
+        where user_id = #{userId,jdbcType=INTEGER}
+    </select>
+    <select id="selectByName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_user
+        where user_name = #{userName}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tb_user
+        where user_id = #{userId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.example.demo1.model.User">
+        insert into tb_user (user_id, user_name, user_pwd,
+                             user_nickname, create_time, update_time,
+                             delete_status)
+        values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR},
+                #{userNickname,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+                #{deleteStatus,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.example.demo1.model.User">
+        insert into tb_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="userPwd != null">
+                user_pwd,
+            </if>
+            <if test="userNickname != null">
+                user_nickname,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="deleteStatus != null">
+                delete_status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPwd != null">
+                #{userPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="userNickname != null">
+                #{userNickname,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteStatus != null">
+                #{deleteStatus,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.example.demo1.model.User">
+        update tb_user
+        <set>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPwd != null">
+                user_pwd = #{userPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="userNickname != null">
+                user_nickname = #{userNickname,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteStatus != null">
+                delete_status = #{deleteStatus,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.example.demo1.model.User">
+        update tb_user
+        set user_name = #{userName,jdbcType=VARCHAR},
+            user_pwd = #{userPwd,jdbcType=VARCHAR},
+            user_nickname = #{userNickname,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            delete_status = #{deleteStatus,jdbcType=VARCHAR}
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
+</mapper>

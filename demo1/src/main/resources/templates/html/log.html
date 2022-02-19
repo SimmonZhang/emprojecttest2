@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>物业管理主页</title>
+    <!--      <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <meta charset="UTF-8">
+    <!-- bootstrp的css文件 -->
+    <link type="text/css" media="all" href="../../static/BootStrp/bootstrap-3.4.1-dist/css/bootstrap.min.css"
+          th:href="@{/static/BootStrp/bootstrap-3.4.1-dist/css/bootstrap.min.css}" rel="stylesheet" />
+
+    <!-- 菜单栏相关外部文件 -->
+    <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+
+    <link rel="stylesheet" type="text/css" media="all" href="../../static/menu_document/css/htmleaf-demo.css"
+          th:href="@{/static/menu_document/css/htmleaf-demo.css}"/>
+    <link rel="stylesheet" href="../../static/menu_document/assets/css/jquery.mCustomScrollbar.min.css"
+          th:href="@{/static/menu_document/assets/css/jquery.mCustomScrollbar.min.css}"/>
+    <link rel="stylesheet" href="../../static/menu_document/assets/css/custom.css"
+          th:href="@{/static/menu_document/assets/css/custom.css}"/>
+    <link rel="stylesheet" href="../../static/css/login.css"
+          th:href="@{/static/css/login.css}"/>
+
+
+    <!-- jquery的js文件 -->
+    <script type="text/javascript" src="../../static/jquery/js/jquery-3.4.1.min.js"
+            th:src="@{/static/jquery/js/jquery-3.4.1.min.js}"></script>
+    <style>
+        #divcss1{ margin:0 auto;text-align: center;line-height: unset;}
+        #divcss2{
+            position:relative;
+            /*top:100px;*/
+            left:2%;
+        }
+        .divcss3{
+            position:relative;
+            hight:275px;
+        }
+        input{width: 100px;color: black;}
+
+        .tdclass{display: none;}
+
+    </style>
+
+    <script  type="text/javascript">
+        function getFormatDate(){
+            var nowDate = new Date();
+            var year = nowDate.getFullYear();
+            var month = nowDate.getMonth() + 1 < 10 ? "0" + (nowDate.getMonth() + 1) : nowDate.getMonth() + 1;
+            var date = nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate.getDate();
+            var hour = nowDate.getHours()< 10 ? "0" + nowDate.getHours() : nowDate.getHours();
+            var minute = nowDate.getMinutes()< 10 ? "0" + nowDate.getMinutes() : nowDate.getMinutes();
+            var second = nowDate.getSeconds()< 10 ? "0" + nowDate.getSeconds() : nowDate.getSeconds();
+            var nowTime = year + "-" + month + "-" + date+" "+hour+":"+minute+":"+second;
+            $('#nowTime').text(nowTime);
+        }
+
+
+        $(function(){
+            setInterval(getFormatDate,1000);
+        })
+
+
+    </script>
+
+</head>
+<body style="background-image: url('../../static/img/bg.jpg')">
+<div id="login">
+    <div id="top">
+        <img th:src="@{/static/img/cloud.jpg}" /><span style="color: #222222">LOGIN</span>
+    </div>
+    <div id="bottom">
+        <form  th:action="@{/log/logins}" th:method="post">
+            <table border="0px" id="table">
+                <tr>
+                    <td class="td1" style="color: black">用户名：</td>
+                    <td><input type="text" value="admin" placeholder="" class="td2" name="userName"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><span id="nameerr"></span></td>
+                </tr>
+                <tr>
+                    <td class="td1" style="color: black">密码：</td>
+                    <td><input type="password"  value="123456" placeholder="" class="td2" name="userPwd"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><span id="pwderr"></span></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="登录" class="td3"></td>
+                </tr>
+            </table>
+        </form>
+
+    </div>
+
+</div>
+<!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+<script src="../../static/BootStrp/bootstrap-3.4.1-dist/js/bootstrap.min.js"
+        th:src="@{/static/BootStrp/bootstrap-3.4.1-dist/js/bootstrap.min.js}"></script>
+<!-- 包括所有已编译的插件 -->
+<script src="../../static/menu_document/assets/js/jquery.mCustomScrollbar.concat.min.js"
+        th:src="@{/static/menu_document/assets/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+<script src="../../static/menu_document/assets/js/custom.js"
+        th:src="@{/static/menu_document/assets/js/custom.js}"></script>
+
+</body>
+<script  type="text/javascript" th:inline="javascript">
+    $(function() {
+        tTof();
+    })
+
+
+    //刷新
+    function pagefresh(){
+        $(':input','#gselectform')
+            .val('').not(':button',':reset',':submit',':hidden')
+            .removeAttr('checked')
+            .removeAttr('selected');
+        $("#page").val(1);
+        $("#gselectform").submit();
+    }
+
+    //查询
+    function gselect(){
+        $("#gselectform").submit();
+    }
+
+    //分页查询
+    function pagesplit(page){
+        $('#page').val(page);
+        $("#gselectform").submit();
+    }
+
+    //车位信息查询ajax
+    function parkingPage(){
+        $("#ctable tbody").on("click","tr",function() {
+
+            let td = $(this).find("td");
+            let data0 = td.eq(0).text();
+            $.ajax({
+                url: "/parking/selectParkingAjax",
+                type: "get",
+                data:{"parkingUId":data0},
+                dataType: 'json',
+                contentType : "application/json; charset=utf-8",
+                success: function (resp) {
+                    $("#pinfo").html("");
+                    let tbody = "";
+                    $.each(resp, function (index, el) {
+                        let tr = "<tr>";
+                        // tr += "<td class='tdclass'>" + el.parkingId  + "</td>";
+                        tr += "<td>" + el.parkingAId  + "</td>";
+                        tr += "<td>" + el.parkingCId  + "</td>";
+                        // tr += "<td>" + el.parkingUId  + "</td>";
+                        tr += "<td>" + el.parkingUName  + "</td>";
+                        tr += "<td>" + el.parkingUTel  + "</td>";
+                        tr += "<td>" + el.parkingStatus  + "</td>";
+                        tr += "</tr>";
+                        tbody += tr;
+                    });
+
+                    $('#ptable').children('tbody').append(tbody);
+
+                },
+                error:function(resp){
+                    alert("error");
+                }
+            })
+        });
+
+
+    }
+
+    //住房信息查询
+    function gselectHouse(){
+        // $("#gselectform").submit();
+        let i = $("#gselectHouseform").serialize();
+        i = decodeURIComponent(i,true);
+
+        $.ajax({
+            url: "/denizen/showHousePageAjax",
+            type: "get",
+            data:i,
+            dataType: 'json',
+            contentType : "application/json; charset=utf-8",
+            success: function (resp) {
+
+                $("#hinfo").html("");
+                let tbody = "";
+                $.each(resp.list, function (index, el) {
+                    let tr = "<tr>";
+                    tr += "<td><input type='checkbox'></td>";
+                    tr += "<td class='tdclass'>" + el.houseId  + "</td>";
+                    tr += "<td>" + el.houseHId  + "</td>";
+                    tr += "<td>" + el.houseRId  + "</td>";
+                    tr += "<td>" + el.houseArea  + "</td>";
+                    tr += "<td>" + el.houseUName  + "</td>";
+                    tr += "<td>" + el.houseUTel  + "</td>";
+                    tr += "</tr>";
+                    tbody += tr;
+                });
+
+                $('#htable').children('tbody').append(tbody);
+
+            },
+            error:function(resp){
+                alert("error");
+            }
+        })
+    }
+
+    //table_data --->form_data点击事件
+    function tTof(){
+
+        $("#ctable tbody").on("click","tr",function() {
+
+            let td = $(this).find("td");
+            let data0 = td.eq(0).text();
+            let data1 = td.eq(1).text();
+            let data2 = td.eq(2).text();
+            let data3 = td.eq(3).text();
+            let data4 = td.eq(4).text();
+            let data5 = td.eq(5).text();
+            let data6 = td.eq(6).text();
+
+            $("#sdenizenId,#ddenizenId").val(data0);
+            $("#sdenizenName,#ddenizenName").val(data1);
+            $("#sdenizenHouseid,#ddenizenHouseid").val(data2);
+            $("#sdenizenRoomid,#ddenizenRoomid").val(data3);
+            $("#sdenizenTel").val(data4);
+            $("#sdenizenParking").val(data5);
+            $("#sdenizenMoneystatus,#ddenizenMoneystatus").val(data6);
+        });
+        $("#htable tbody").on("click","tr",function() {
+
+            let td = $(this).find("td");
+            // let data0 = td.eq(0).text();
+            let data1 = td.eq(1).text();
+            let data2 = td.eq(2).text();
+            let data3 = td.eq(3).text();
+            let data4 = td.eq(4).text();
+            // let data5 = td.eq(5).text();
+            // let data6 = td.eq(6).text();
+
+            // $("#adenizenHhouseid").val(data0);
+            $("#adenizenHhouseid").val(data1);
+            $("#adenizenHouseid").val(data2);
+            $("#adenizenRoomid").val(data3);
+            // $("#adenizenTel").val(data6);
+            // $("#adenizenParking").val(data5);
+            // $("#adenizenMoneystatus").val(data6);
+        });
+    }
+
+    //添加函数
+    function addForm(){
+        let i = $("#addForm").serialize();
+        i = decodeURIComponent(i,true);
+
+        $.ajax({
+            url: "/denizen/insertDenizen",
+            type: "post",
+            data:i,
+            dataType: 'text',
+            // contentType : "application/json; charset=utf-8",
+            success: function (resp) {
+                alert(resp);
+                $('#myModal4').modal('hide');
+                gselect();
+            },
+            error:function(resp){
+                alert("error");
+            }
+        })
+
+    }
+
+    //修改函数
+    function setForm(){
+        let i = $("#setForm").serialize();
+        i = decodeURIComponent(i,true);
+
+
+        $.ajax({
+            url: "/denizen/updateDenizen",
+            type: "get",
+            data:i,
+            // async:false,
+            // dataType: 'text',
+            success: function (resp) {
+                alert(resp)
+                $('#myModal1').modal('hide');
+                gselect();
+            },
+            error:function(resp){
+                alert("error");
+            }
+        })
+    }
+    //删除函数
+    function delForm(){
+        let i = $("#delForm").serialize();
+        i = decodeURIComponent(i,true);
+
+        $.ajax({
+            url: "/denizen/deleteDenizen",
+            type: "get",
+            data:i,
+            // async:false,
+            // dataType: 'text',
+            success: function (resp) {
+                alert(resp)
+                $('#myModal2').modal('hide');
+                gselect();
+            },
+            error:function(resp){
+                alert("error");
+            }
+        })
+    }
+
+
+</script>
+</html>

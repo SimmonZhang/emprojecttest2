@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>物业管理主页</title>
+    <!--      <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <meta charset="UTF-8">
+    <!-- bootstrp的css文件 -->
+    <link type="text/css" media="all" href="../../static/BootStrp/bootstrap-3.4.1-dist/css/bootstrap.min.css"
+          th:href="@{/static/BootStrp/bootstrap-3.4.1-dist/css/bootstrap.min.css}" rel="stylesheet" />
+
+    <!-- 菜单栏相关外部文件 -->
+    <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+
+    <link rel="stylesheet" type="text/css" media="all" href="../../static/menu_document/css/htmleaf-demo.css"
+          th:href="@{/static/menu_document/css/htmleaf-demo.css}"/>
+    <link rel="stylesheet" href="../../static/menu_document/assets/css/jquery.mCustomScrollbar.min.css"
+          th:href="@{/static/menu_document/assets/css/jquery.mCustomScrollbar.min.css}"/>
+    <link rel="stylesheet" href="../../static/menu_document/assets/css/custom.css"
+          th:href="@{/static/menu_document/assets/css/custom.css}"/>
+
+
+    <!-- jquery的js文件 -->
+    <script type="text/javascript" src="../../static/jquery/js/jquery-3.4.1.min.js"
+            th:src="@{/static/jquery/js/jquery-3.4.1.min.js}"></script>
+    <style>
+        #divcss1{ margin:0 auto;text-align: center;line-height: unset;}
+        #divcss2{
+            position:relative;
+            /*top:100px;*/
+            left:2%;
+        }
+        .divcss3{
+            position:relative;
+            hight:275px;
+        }
+        input{width: 100px;color: black;}
+
+        .tdclass{display: none;}
+
+    </style>
+
+    <script  type="text/javascript">
+        function getFormatDate(){
+            var nowDate = new Date();
+            var year = nowDate.getFullYear();
+            var month = nowDate.getMonth() + 1 < 10 ? "0" + (nowDate.getMonth() + 1) : nowDate.getMonth() + 1;
+            var date = nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate.getDate();
+            var hour = nowDate.getHours()< 10 ? "0" + nowDate.getHours() : nowDate.getHours();
+            var minute = nowDate.getMinutes()< 10 ? "0" + nowDate.getMinutes() : nowDate.getMinutes();
+            var second = nowDate.getSeconds()< 10 ? "0" + nowDate.getSeconds() : nowDate.getSeconds();
+            var nowTime = year + "-" + month + "-" + date+" "+hour+":"+minute+":"+second;
+            $('#nowTime').text(nowTime);
+        }
+
+
+        $(function(){
+            setInterval(getFormatDate,1000);
+        })
+
+
+    </script>
+
+</head>
+<body>
+<input type="button" value="添加" id="addBtnId" onclick="tdTest(this)"  className="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal3">
+<div id="dtable">
+    <table id="ctable" class="table">
+        <thead>
+        <td>序号</td>
+        <td>角色</td>
+        <td>用户</td>
+        <td>菜单&权限</td>
+        <td>管理</td>
+        </thead>
+        <tbody id="info">
+
+        </tbody>
+    </table>
+
+</div>
+
+<!--模态框-->
+<!--修改-->
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel" style="color:black">模态框（Modal）标题</h4>
+            </div>
+            <div class="modal-body" style="color:black">
+                <div>
+                    角色名称<input id="roleNameId" name="roleNameId" type="text">
+                </div>
+                <br>
+                <div>
+                    <form id="pmForm">
+                    <div>
+                        <span><input type="button" value="用户管理"></span>
+                        <span><input id="101" type="checkbox" name="permissionId" value="101"/>列表</span>
+                        <span><input id="102" type="checkbox" name="permissionId" value="102"/>新增</span>
+                        <span><input id="103" type="checkbox" name="permissionId" value="103"/>修改</span>
+                    </div>
+                    <div>
+                        <span><input type="button" value="角色管理"></span>
+                        <span><input id="201" type="checkbox" name="permissionId" value="201"/>列表</span>
+                        <span><input id="202" type="checkbox" name="permissionId" value="202"/>新增</span>
+                        <span><input id="203" type="checkbox" name="permissionId" value="203"/>修改</span>
+                        <span><input id="204" type="checkbox" name="permissionId" value="204"/>删除</span>
+                    </div>
+                    </form>
+                </div>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="color:black">关闭</button>
+                <button type="button" id="u_id" class="btn btn-primary" onclick="">提交更改</button>
+            </div>
+
+
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal -->
+<!--删除-->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel" style="color:black">模态框（Modal）标题</h4>
+            </div>
+            <div class="modal-body" style="color:black">
+
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="color:black">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="addForm()">提交更改</button>
+            </div>
+
+
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal -->
+<!--增加-->
+<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel" style="color:black">模态框（Modal）标题</h4>
+            </div>
+            <div class="modal-body" style="color:black">
+                <div>
+                    角色名称<input id="a_roleNameId" name="a_roleNameId" type="text">
+                </div>
+                <br>
+                <div>
+                    <form id="a_pmForm">
+                        <div>
+                            <span><input type="button" value="用户管理"></span>
+                            <span><input type="checkbox" name="a_permissionId" value="101"/>列表</span>
+                            <span><input type="checkbox" name="a_permissionId" value="102"/>新增</span>
+                            <span><input type="checkbox" name="a_permissionId" value="103"/>修改</span>
+                        </div>
+                        <div>
+                            <span><input type="button" value="角色管理"></span>
+                            <span><input type="checkbox" name="a_permissionId" value="201"/>列表</span>
+                            <span><input type="checkbox" name="a_permissionId" value="202"/>新增</span>
+                            <span><input type="checkbox" name="a_permissionId" value="203"/>修改</span>
+                            <span><input type="checkbox" name="a_permissionId" value="204"/>删除</span>
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="color:black">关闭</button>
+                <button type="button" id="a_id" class="btn btn-primary" onclick="">提交更改</button>
+            </div>
+
+
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal -->
+
+
+<!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+<script src="../../static/BootStrp/bootstrap-3.4.1-dist/js/bootstrap.min.js"
+        th:src="@{/static/BootStrp/bootstrap-3.4.1-dist/js/bootstrap.min.js}"></script>
+<!-- 包括所有已编译的插件 -->
+<script src="../../static/menu_document/assets/js/jquery.mCustomScrollbar.concat.min.js"
+        th:src="@{/static/menu_document/assets/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+<script src="../../static/menu_document/assets/js/custom.js"
+        th:src="@{/static/menu_document/assets/js/custom.js}"></script>
+</body>
+<script  type="text/javascript" th:inline="javascript">
+    $(function() {
+        parkingPage()
+    })
+
+
+    // <!--ajax交互 js拼接html元素 -->
+    function parkingPage(){
+        $("#info").html("");
+
+        $.ajax({
+            url: "/user/userTest",
+            type: "post",
+            // data:{"parkingUId":data0},
+            dataType: 'json',
+            contentType : "application/json; charset=utf-8",
+            success: function (resp) {
+                console.log(resp);
+                // alert(resp.get(0))
+                // $("#info").html("");
+                let tbody = "";
+                $.each(resp, function (index, el) {
+                        $.each(el, function (index, el1) {
+                    let tr = "<tr>";
+                    // tr += "<td class='tdclass'>" + el.parkingId  + "</td>";
+                    tr += "<td>" + el1.roleId  + "</td>";
+                    tr += "<td>" + el1.roleName  + "</td>";
+                    $.each(el1.users, function (index, el2) { tr += "<td>"+el2.nickname+"</td>" });
+                    if (el1.users==null){tr += "<td>"+"</td>";}
+                    tr += "<td>";
+                    $.each(el1.menus, function (index, el2) {
+                            tr +="<div>"+"<span>"+el2.menuName+":"+"</span>";
+                    $.each(el2.permissions, function (index, el3) {
+                        tr += "<span>"+el3.permissionName+"</span>" ;
+                        // tr += "<span hidden class='permissionId'>"+el3.permissionId+"</span>";
+                    });
+                            tr += "</div>";
+                    });
+                            tr +="<div" +" "+ "id='"+el1.roleId+"'" +" hidden>";
+                            //权限id放到div中
+                            $.each(el1.menus, function (index, el2) {
+
+                                $.each(el2.permissions, function (index, el3) {
+                                    tr += "<span>"+el3.permissionId+"</span>";
+                                });
+
+                            });
+                            tr += "</div>";
+
+                    tr += "</td>";
+
+                    tr += "<td>" +  ' <input type="button" value="修改" id="addBtnId" onclick="tdTest(this)"  className="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal1"> <input type="button" value="删除" id="delBtnId" onclick="deleteRole(this)" className="btn btn-default btn-sm">'+ "</td>";
+                    // tr += "<td>" + el.parkingUTel  + "</td>";
+                    // tr += "<td>" + el.parkingStatus  + "</td>";
+                    tr += "</tr>";
+                    tbody += tr;
+                        });
+                });
+
+                $('#ctable').children('tbody').append(tbody);
+                // $('#101').prop("checked","abc");
+            //    权限checkbox选中状态
+
+                var myRight = [];
+                $("#1pId span").each(function(index, element) {
+                    //追加到数组中
+                    myRight.push(parseInt($(this).text()));
+                });
+                console.log(myRight);
+                var allRight = new Array(101,102,103,201,202,203,204);
+                for (i=0;i<myRight.length;i++){
+                    if(allRight.includes(myRight[i])){
+                        // alert(myRight[i]);
+                        $("input:checkbox[value='"+myRight[i]+"']").attr('checked','true');
+                    }
+                }
+
+            },
+            error:function(resp){
+                alert("error");
+            }
+        })
+}
+
+
+
+    //权限多选框自动选中
+    function AutoChecked(that){
+        let td = $(that).parents("tr").find("td");
+        var roleId = parseInt(td.eq(0).text());
+        var myRight = [];
+        $("div[id = "+ roleId +"]").each(function(index, element) {
+            //追加到数组中
+            myRight.push(parseInt($(this).text()));
+        });
+        console.log(myRight);
+        var allRight = new Array(101,102,103,201,202,203,204);
+        for (i=0;i<myRight.length;i++){
+            if(allRight.includes(myRight[i])){
+                // alert(myRight[i]);
+                $("input:checkbox[value='"+myRight[i]+"']").attr('checked','true');
+            }
+        }
+
+    }
+
+    //修改模态框中获取选中多选框的值
+    function SaveCheck(){
+        var arry = new Array();
+        //循环所有选中的值
+        $('input[name="permissionId"]:checked').each(function(index, element) {
+            //追加到数组中
+            arry.push(parseInt($(this).val()));
+        });
+        //将数组元素连接起来转化为字符串
+        var arrystr = arry.join(',');
+        //输出到控制台
+        console.log("选中值："+ arrystr);
+        return arry;
+    }
+
+    //添加模态框中--获取选中多选框的值
+    function aSaveCheck(){
+        var arry = new Array();
+        //循环所有选中的值
+        $('input[name="a_permissionId"]:checked').each(function(index, element) {
+            //追加到数组中
+            arry.push(parseInt($(this).val()));
+        });
+        //将数组元素连接起来转化为字符串
+        var arrystr = arry.join(',');
+        //输出到控制台
+        console.log("选中值："+ arrystr);
+        return arry;
+    }
+
+    function testSc(){
+        getRoleId()
+        let i = SaveCheck();
+        console.log(i);
+        alert(i)
+    }
+
+    function tdTest(that) {
+        //清空多选框
+        // $(':input', '#pmForm')
+        //     .removeAttr('checked')
+        $(':input', '#a_pmForm')
+            .removeAttr('checked')
+        //获取roleId
+        let td = $(that).parents("tr").find("td");
+        var roleId = parseInt(td.eq(0).text());
+
+
+        //权限多选框自动选中
+        var myRight = [];
+        $("div[id = "+ roleId +"]").find("span").each(function(index, element) {
+            //追加到数组中
+            myRight.push(parseInt($(this).text()));
+        });
+        console.log(myRight);
+        var allRight = new Array(101,102,103,201,202,203,204);
+        for (i=0;i<myRight.length;i++){
+            if(allRight.includes(myRight[i])){
+                // alert(myRight[i]);
+                $("input:checkbox[value='"+myRight[i]+"']").attr('checked','true');
+            }
+        }
+
+        //提交按钮点击事件
+        $("#u_id").click(function() {
+            let permissions = SaveCheck();
+            //获取roleName
+            let roleName = $("input[name='roleNameId']").val();
+            let requestJson = {'permissions':permissions, 'roleId':roleId,'roleName':roleName};
+            alert(JSON.stringify(requestJson))
+            $.ajax({
+                url: "/user/updateRole",
+                type: "post",
+                data: JSON.stringify(requestJson),
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (resp) {
+                    if (resp==200){
+                        alert("success!!!")
+                        $("#u_id").unbind();
+                        $("#u_id").click(function(){parkingPage()});
+                    }else{
+                    alert("getNothing!!!")
+                    }
+                },
+                error: function (resp) {
+                    alert("error");
+                }
+            })
+        })
+
+        $("#a_id").click(function() {
+            var permissions = aSaveCheck();
+            //获取roleName
+            var roleName = $("input[name='a_roleNameId']").val();
+            var requestJson = {'permissions':permissions,'roleName':roleName};
+            alert(JSON.stringify(requestJson))
+            $.ajax({
+                url: "/user/insertRole",
+                type: "post",
+                data: JSON.stringify(requestJson),
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (resp) {
+                    if (resp==200){
+                        alert("success!!!")
+                        parkingPage()
+                    }else{
+                        alert("getNothing!!!")
+                    }
+                },
+                error: function (resp) {
+                    alert("error");
+                }
+            })
+        })
+    }
+
+    function updateRole(){
+        var permissions = SaveCheck();
+        var roleId = tdTest(that);
+        alert(permissions+roleId)
+
+        $.ajax({
+            url: "/user/updateRole",
+            type: "post",
+            data:{"roleId":roleId,"permissions":permissions},
+            dataType: 'json',
+            contentType : "application/json; charset=utf-8",
+            success: function (resp) {
+                alert("success!!!")
+            },
+            error:function(resp){
+                alert("error");
+            }
+        })
+    }
+
+    function deleteRole(that){
+
+            let td = $(that).parents("tr").find("td");
+            var roleId = parseInt(td.eq(0).text());
+            var requestJson = {"roleId":roleId}
+            alert("111"+roleId)
+            $.ajax({
+                url: "/user/deleteRole",
+                type: "post",
+                data:JSON.stringify(requestJson),
+                dataType: 'json',
+                contentType : "application/json; charset=utf-8",
+                success: function (resp) {
+                    alert("success!!!")
+                    parkingPage();
+                },
+                error:function(resp){
+                    alert("error");
+                }
+            })
+    }
+    function insertRole(){
+
+
+    }
+</script>
+
+</html>

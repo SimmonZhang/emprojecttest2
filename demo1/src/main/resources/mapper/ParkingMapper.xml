@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo1.mapper.ParkingMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo1.model.Parking">
+    <id column="parking_id" jdbcType="VARCHAR" property="parkingId" />
+    <result column="parking_a_id" jdbcType="VARCHAR" property="parkingAId" />
+    <result column="parking_c_id" jdbcType="VARCHAR" property="parkingCId" />
+    <result column="parking_u_id" jdbcType="VARCHAR" property="parkingUId" />
+    <result column="parking_u_name" jdbcType="VARCHAR" property="parkingUName" />
+    <result column="parking_u_tel" jdbcType="VARCHAR" property="parkingUTel" />
+    <result column="parking_status" jdbcType="CHAR" property="parkingStatus" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    parking_id, parking_a_id, parking_c_id, parking_u_id, parking_u_name, parking_u_tel, 
+    parking_status
+  </sql>
+  <select id="selectByExample" parameterType="com.example.demo1.model.ParkingExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from tb_parking
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_parking
+    where parking_id = #{parkingId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_parking
+    where parking_id = #{parkingId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo1.model.Parking">
+    insert into tb_parking (parking_id, parking_a_id, parking_c_id, 
+      parking_u_id, parking_u_name, parking_u_tel, 
+      parking_status)
+    values (#{parkingId,jdbcType=VARCHAR}, #{parkingAId,jdbcType=VARCHAR}, #{parkingCId,jdbcType=VARCHAR}, 
+      #{parkingUId,jdbcType=VARCHAR}, #{parkingUName,jdbcType=VARCHAR}, #{parkingUTel,jdbcType=VARCHAR}, 
+      #{parkingStatus,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo1.model.Parking">
+    insert into tb_parking
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="parkingId != null">
+        parking_id,
+      </if>
+      <if test="parkingAId != null">
+        parking_a_id,
+      </if>
+      <if test="parkingCId != null">
+        parking_c_id,
+      </if>
+      <if test="parkingUId != null">
+        parking_u_id,
+      </if>
+      <if test="parkingUName != null">
+        parking_u_name,
+      </if>
+      <if test="parkingUTel != null">
+        parking_u_tel,
+      </if>
+      <if test="parkingStatus != null">
+        parking_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="parkingId != null">
+        #{parkingId,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingAId != null">
+        #{parkingAId,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingCId != null">
+        #{parkingCId,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingUId != null">
+        #{parkingUId,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingUName != null">
+        #{parkingUName,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingUTel != null">
+        #{parkingUTel,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingStatus != null">
+        #{parkingStatus,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo1.model.Parking">
+    update tb_parking
+    <set>
+      <if test="parkingAId != null">
+        parking_a_id = #{parkingAId,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingCId != null">
+        parking_c_id = #{parkingCId,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingUId != null">
+        parking_u_id = #{parkingUId,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingUName != null">
+        parking_u_name = #{parkingUName,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingUTel != null">
+        parking_u_tel = #{parkingUTel,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingStatus != null">
+        parking_status = #{parkingStatus,jdbcType=CHAR},
+      </if>
+    </set>
+    where parking_id = #{parkingId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo1.model.Parking">
+    update tb_parking
+    set parking_a_id = #{parkingAId,jdbcType=VARCHAR},
+      parking_c_id = #{parkingCId,jdbcType=VARCHAR},
+      parking_u_id = #{parkingUId,jdbcType=VARCHAR},
+      parking_u_name = #{parkingUName,jdbcType=VARCHAR},
+      parking_u_tel = #{parkingUTel,jdbcType=VARCHAR},
+      parking_status = #{parkingStatus,jdbcType=CHAR}
+    where parking_id = #{parkingId,jdbcType=VARCHAR}
+  </update>
+</mapper>
